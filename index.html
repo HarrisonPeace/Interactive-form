@@ -76,6 +76,7 @@
             <div id="shirt-colors" class="shirt-colors">
               <label for="color">Color:</label>
               <select id="color" disabled>
+				<option selected hidden>Select a Color</option>
                 <option selected hidden>Select a design theme above</option>
                 <option data-theme="js puns" value="cornflowerblue">Cornflower Blue (JS Puns shirt only)</option>
                 <option data-theme="js puns" value="darkslategrey">Dark Slate Grey (JS Puns shirt only)</option> 
@@ -151,10 +152,10 @@
         <div class="payment-method-box">
           <label for="payment">I'm going to pay with:</label>
           <select id="payment" name="user-payment">
-            <option value="select method" hidden>Select Payment Method</option>
             <option value="credit-card">Credit Card</option>
             <option value="paypal">PayPal</option>
             <option value="bitcoin">Bitcoin</option>
+			<option selected value="select method" hidden>Select Payment Method</option>
           </select>
         </div>
 
