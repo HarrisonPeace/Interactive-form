@@ -110,9 +110,11 @@ function showPaymentOption(paymentOption) {
 	//show desired option
 	paymentOption.style.display = 'block';
 }
+
 /*==========================================================================
 -----------------------------  Form Validation -----------------------------
 ============================================================================*/
+
 let form = document.querySelector('form');
 let nameF = document.getElementById('name');
 let email = document.getElementById('email');
@@ -134,22 +136,20 @@ function showValid(element) {
 	element.parentElement.lastElementChild.style.display = 'none';
 }
 
+function isValidEmil () {
+	if (/^[^@]+@([a-z]|\d|-)+.com$/.test(email.value)) { //test for usual email format
+		showValid(email);
+	} else {
+		showErrors(email);
+	}
+}
+
 function isValidName() {
-	if (/[a-z]|[A-Z]/.test(nameF.value)) { //test for at least one letter
+	if (/[a-zA-Z]/.test(nameF.value)) { //test for at least one letter
 		showValid(nameF);
 		return true;
 	} else {
 		showErrors(nameF);
-		return false;
-	}
-}
-
-function isValidEmail() {
-	if (/^[^@]+@([a-z]|\d|-)+.com$/.test(email.value)) { //test for usual email format
-		showValid(email);
-		return true;
-	} else {
-		showErrors(email);
 		return false;
 	}
 }
@@ -171,7 +171,49 @@ function hasActivitySelected() {
 		return false;
 	}
 }
-/*-----------------------  CC Real Time Validation -------------------------*/
+
+function checkCCExpM () {
+	if (cc_ExpM.value !== 'Select Date') {
+		showValid(cc_ExpM);
+	} else {
+		showErrors(cc_ExpM);
+	}
+}
+
+function checkCCExpY () {
+	if (cc_ExpY.value !== 'Select Year') {
+		showValid(cc_ExpY);
+	} else {
+		showErrors(cc_ExpY);
+	}
+}
+
+function hasValidCreditCard() {
+	let validDetails = true;
+	function checkCCdetails (CCcomponent) {
+		if (!CCcomponent.parentElement.classList.contains('valid')) {
+			validDetails = false;
+			showErrors(CCcomponent);
+		}
+	}
+	//validate credit card exp month
+	checkCCExpM()
+	//validate credit card exp year
+	checkCCExpY()
+	//confirm each credit card compenent has been validated
+	checkCCdetails(cc_ExpM)
+	checkCCdetails(cc_ExpY)
+	checkCCdetails(cc_Num)
+	checkCCdetails(cc_Zip)
+	checkCCdetails(cc_Cvv)
+	return validDetails;
+}
+
+/*-----------------------  Real Time Validation  -------------------------*/
+
+//validate email
+email.addEventListener('keyup', isValidEmil);
+
 //validate credit card number
 cc_Num.addEventListener('keyup', () => {
 	if (/^\d{13,16}$/.test(cc_Num.value)) {
@@ -184,6 +226,7 @@ cc_Num.addEventListener('keyup', () => {
 		showErrors(cc_Num);
 	}
 });
+
 //validate credit card zip
 cc_Zip.addEventListener('keyup', () => {
 	if (/^\d{5}$/.test(cc_Zip.value)) {
@@ -196,6 +239,7 @@ cc_Zip.addEventListener('keyup', () => {
 		showErrors(cc_Zip);
 	}
 });
+
 //validate credit card cvv
 cc_Cvv.addEventListener('keyup', () => {
 	if (/^\d{3}$/.test(cc_Cvv.value)) {
@@ -208,49 +252,25 @@ cc_Cvv.addEventListener('keyup', () => {
 		showErrors(cc_Cvv);
 	}
 });
-/*-------------------------------------------------------------------------------------*/
-function hasValidCreditCard() {
-	let validator = true;
-	//validate credit card exp month
-	if (cc_ExpM.value !== 'Select Date') {
-		showValid(cc_ExpM);
-	} else {
-		showErrors(cc_ExpM);
-		validator = false;
-	}
-	//validate credit card exp year
-	if (cc_ExpY.value !== 'Select Year') {
-		showValid(cc_ExpY);
-	} else {
-		showErrors(cc_ExpY);
-		validator = false;
-	}
-	//confirm credit card number has been validated
-	if (!cc_Num.parentElement.classList.contains('valid')) {
-		validator = false;
-		showErrors(cc_Num);
-	}
-	//confirm credit card zip has been validated
-	if (!cc_Zip.parentElement.classList.contains('valid')) {
-		validator = false;
-		showErrors(cc_Zip);
-	}
-	//confirm credit card cvv has been validated
-	if (!cc_Cvv.parentElement.classList.contains('valid')) {
-		validator = false;
-		showErrors(cc_Cvv);
-	}
-	return validator;
-}
+
+/*==========================================================================
+-----------------------------------  Submit --------------------------------
+============================================================================*/
+
 form.addEventListener('submit', (e) => {
 	let nameV = isValidName();
-	let emailV = isValidEmail();
+	let emailV = email.parentElement.classList.contains('valid'); //confirm email has been validated
 	let hasAct = hasActivitySelected();
 	let creditV = true;
-	if (payment_Options.value === 'credit-card') {
+	if (payment_Options.value === 'credit-card') { //only validate CC if it is selected
 		creditV = hasValidCreditCard();
-	} //only validate CC if it is selected
-	if (!nameV || !emailV || !hasAct || !creditV) { // prevent form submitting if there is an error
-		e.preventDefault();
+	} 
+	if (!nameV || !emailV || !hasAct || !creditV) { //check if error with any compenent
+		e.preventDefault(); // prevent form submitting if there is an error
+		isValidEmil(); //check if email is valid
+		nameF.addEventListener('keyup', isValidName); //add real time validation for name
+		activities_Container.addEventListener('change', hasActivitySelected); //add real time validation for activities
+		cc_ExpM.addEventListener('change', checkCCExpM); //add real time validation for credit card expiry month
+		cc_ExpY.addEventListener('change', checkCCExpY); //add real time validation for credit card expiry year
 	}
 });
