@@ -1,7 +1,9 @@
 // JavaScript Document
+
 /*==========================================================================
 ------------------------------    Job Role  --------------------------------
 ============================================================================*/
+
 let jobRole = document.getElementById('title');
 let jobRole_otherTextBox = document.getElementById('other-job-role');
 jobRole_otherTextBox.style.display = 'none'; //hide on load
@@ -15,6 +17,7 @@ jobRole.addEventListener('click', (e) => {
 /*==========================================================================
 -------------------------------    T-shirt  --------------------------------
 ============================================================================*/
+
 let Tshirt_design = document.getElementById('design');
 let Tshirt_color = document.getElementById('color');
 let Tshirt_colorOptions = Tshirt_color.querySelectorAll('[data-theme]');
@@ -38,9 +41,11 @@ Tshirt_design.addEventListener('change', (e) => {
 		displayColors('js puns');
 	}
 });
+
 /*==========================================================================
 -------------------------------  Activities  -------------------------------
 ============================================================================*/
+
 let activities_Container = document.getElementById('activities');
 let activities_Cost = document.getElementById('activities-cost');
 let activities_Inputs = activities_Container.querySelectorAll('input');
@@ -73,6 +78,7 @@ activities_Container.addEventListener('change', (e) => {
 	}
 });
 /*-------------------------  Improved Focus State  -------------------------*/
+
 //loop through all activity inputs and add focus and blur event listener
 for (let i = 0; i < activities_Inputs.length; i++) {
 	activities_Inputs[i].addEventListener('focus', (e) => {
@@ -85,6 +91,7 @@ for (let i = 0; i < activities_Inputs.length; i++) {
 /*==========================================================================
 ---------------------------------  Payment  --------------------------------
 ============================================================================*/
+
 let payment_Options = document.getElementById('payment');
 let payment_CC = document.getElementById('credit-card');
 let payment_Paypal = document.getElementById('paypal');
@@ -197,15 +204,15 @@ function hasValidCreditCard() {
 		}
 	}
 	//validate credit card exp month
-	checkCCExpM()
+	checkCCExpM();
 	//validate credit card exp year
-	checkCCExpY()
+	checkCCExpY();
 	//confirm each credit card compenent has been validated
-	checkCCdetails(cc_ExpM)
-	checkCCdetails(cc_ExpY)
-	checkCCdetails(cc_Num)
-	checkCCdetails(cc_Zip)
-	checkCCdetails(cc_Cvv)
+	checkCCdetails(cc_ExpM);
+	checkCCdetails(cc_ExpY);
+	checkCCdetails(cc_Num);
+	checkCCdetails(cc_Zip);
+	checkCCdetails(cc_Cvv);
 	return validDetails;
 }
 
