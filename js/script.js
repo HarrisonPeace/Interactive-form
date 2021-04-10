@@ -135,7 +135,7 @@ function showValid(element) {
 }
 
 function isValidName() {
-	if (name.value !== '') {
+	if (/[a-z]|[A-Z]/.test(nameF.value)) { //test for at least one letter
 		showValid(nameF);
 		return true;
 	} else {
@@ -145,7 +145,7 @@ function isValidName() {
 }
 
 function isValidEmail() {
-	if (/^[^@]+@([a-z]|\d|-)+.com$/.test(email.value)) {
+	if (/^[^@]+@([a-z]|\d|-)+.com$/.test(email.value)) { //test for usual email format
 		showValid(email);
 		return true;
 	} else {
