@@ -143,10 +143,14 @@ function showValid(element) {
 	element.parentElement.lastElementChild.style.display = 'none';
 }
 
-function isValidEmil () {
+function isValidEmail () {
 	if (/^[^@]+@([a-z]|\d|-)+.com$/.test(email.value)) { //test for usual email format
 		showValid(email);
+	} else if (email.value == '') { //test if empty
+		email.parentElement.lastElementChild.innerHTML = 'Email field cannot be blank';
+		showErrors(email);
 	} else {
+		email.parentElement.lastElementChild.innerHTML = 'Email address must be formatted correctly';
 		showErrors(email);
 	}
 }
@@ -219,7 +223,7 @@ function hasValidCreditCard() {
 /*-----------------------  Real Time Validation  -------------------------*/
 
 //validate email
-email.addEventListener('keyup', isValidEmil);
+email.addEventListener('keyup', isValidEmail);
 
 //validate credit card number
 cc_Num.addEventListener('keyup', () => {
@@ -274,7 +278,7 @@ form.addEventListener('submit', (e) => {
 	} 
 	if (!nameV || !emailV || !hasAct || !creditV) { //check if error with any compenent
 		e.preventDefault(); // prevent form submitting if there is an error
-		isValidEmil(); //check if email is valid
+		isValidEmail(); //check if email is valid
 		nameF.addEventListener('keyup', isValidName); //add real time validation for name
 		activities_Container.addEventListener('change', hasActivitySelected); //add real time validation for activities
 		cc_ExpM.addEventListener('change', checkCCExpM); //add real time validation for credit card expiry month
